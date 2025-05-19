@@ -1,0 +1,11 @@
+/* HealthForm.css */
+.health-form {
+    font-size: 20px;
+  }
+  
+  .health-form input,
+  .health-form select,
+  .health-form textarea,
+  .health-form option {
+    font-size: 20px;
+  }

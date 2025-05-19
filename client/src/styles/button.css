@@ -1,0 +1,89 @@
+/* buttons.css */
+
+.btn {
+  display: inline-block;
+  background-color: #333333;       /* 濃いグレー（ブラックに近い） */
+  color: #ffffff;                  /* 白文字 */
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn:hover {
+  background-color: #444444;       /* 少し明るいグレーに */
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  background-color: #222222;
+  transform: translateY(1px);
+}
+/* アクティブ状態のボタン */
+.btn-active {
+  background-color: #e5e7eb; 
+  color: black;
+}
+.btn-secondary {
+  background-color: #e5e7eb;       /* 明るいグレー（tailwindのgray-200相当） */
+  color: #111827;                  /* 濃い文字色 */
+}
+
+.btn-secondary:hover {
+  background-color: #d1d5db;       /* hover時少し濃いめ */
+}
+
+.btn-user {
+  padding: 10px 24px;
+  margin: 6px;
+  background-color: #f9fafb;         /* ごく薄いグレー */
+  color: #111827;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-user:hover {
+  background-color: #e5e7eb;
+  transform: translateY(-1px);
+}
+
+.btn-user:active {
+  background-color: #d1d5db;
+  transform: translateY(1px);
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 8px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border: 2px solid #ccc;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  background-color: #e0e0e0;
+  border-color: #888;
+  transform: translateX(-2px); /* 左方向に動かして戻る感を出す */
+}
+
+.back-btn:active {
+  background-color: #d0d0d0;
+  border-color: #666;
+  transform: translateX(0); /* 戻す */
+}
