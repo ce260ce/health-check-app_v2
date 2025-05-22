@@ -1,10 +1,11 @@
 import './AdminPage.css';
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function AdminPage() {
+const API = process.env.REACT_APP_API_URL;
+
+export const AdminPage = () => {
     const [names, setNames] = useState([]);
     const [selected, setSelected] = useState([]);
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ function AdminPage() {
     const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
     useEffect(() => {
-        axios.get("http://localhost:5000/api/names")
+        axios.get(`${API}/api/names`)
             .then(res => setNames(res.data.map(n => n.name)));
     }, []);
 
@@ -27,7 +28,7 @@ function AdminPage() {
 
     const handleSubmit = async () => {
         for (const name of selected) {
-            await axios.post("http://localhost:5000/api/health", {
+            await axios.post(`${API}/api/health`, {
                 name,
                 condition: "年休",
                 task: "",
@@ -41,7 +42,6 @@ function AdminPage() {
 
     return (
         <div style={{ padding: 20, fontFamily: "sans-serif", position: "relative", fontSize: '20px' }}>
-            {/* ← 左上に固定された戻るボタン */}
             <button className="back-btn" onClick={() => navigate("/")} style={{ marginBottom: 20 }}>
                 ← 戻る
             </button>
@@ -69,6 +69,4 @@ function AdminPage() {
             </button>
         </div>
     );
-}
-
-export default AdminPage;
+};

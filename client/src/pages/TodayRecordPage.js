@@ -1,11 +1,11 @@
-// src/pages/TodayRecordPage.js
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { TodayRecordTable } from "../components/TodayRecordTable";
 
-import TodayRecordTable from "../components/TodayRecordTable";
+const API = process.env.REACT_APP_API_URL;
 
-function TodayRecordPage() {
+export const TodayRecordPage = () => {
     const navigate = useNavigate();
 
     const today = new Date();
@@ -17,10 +17,10 @@ function TodayRecordPage() {
     const [names, setNames] = useState([]);
 
     useEffect(() => {
-        axios.get(`http://localhost:5000/api/health?year=${year}&month=${month}`)
+        axios.get(`${API}/api/health?year=${year}&month=${month}`)
             .then(res => setRecords(res.data));
 
-        axios.get("http://localhost:5000/api/names")
+        axios.get(`${API}/api/names`)
             .then(res => setNames(res.data.map(n => n.name)));
     }, [year, month]);
 
@@ -32,6 +32,4 @@ function TodayRecordPage() {
             <TodayRecordTable names={names} records={records} todayStr={todayStr} />
         </div>
     );
-}
-
-export default TodayRecordPage;
+};

@@ -1,4 +1,4 @@
-function HealthTable({ uniqueDates, names, records, view, todayStr }) {
+export const HealthTable = ({ uniqueDates, names, records, view, todayStr }) => {
     const getRecord = (date, name) =>
         records.find(r => r.name === name && r.date.startsWith(date)) || {};
 
@@ -51,6 +51,4 @@ function HealthTable({ uniqueDates, names, records, view, todayStr }) {
             </tbody>
         </table>
     );
-}
-
-export default HealthTable;
+};

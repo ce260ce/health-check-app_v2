@@ -1,4 +1,3 @@
-// src/hooks/useFormState.js
 import { useState } from "react";
 
 export const useFormState = (initialName, todayStr) => {
@@ -17,6 +16,7 @@ export const useFormState = (initialName, todayStr) => {
         setKy("");
         setBreakfast("〇");
     };
+
 
     return {
         name, setName,

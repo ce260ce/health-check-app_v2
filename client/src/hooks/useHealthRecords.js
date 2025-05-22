@@ -1,6 +1,7 @@
-// src/hooks/useHealthRecords.js
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+
+const API = process.env.REACT_APP_API_URL;
 
 export const useHealthRecords = (year, month) => {
     const [records, setRecords] = useState([]);
@@ -8,16 +9,16 @@ export const useHealthRecords = (year, month) => {
 
     const fetchRecords = useCallback(async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/api/health?year=${year}&month=${month}`);
+            const res = await axios.get(`${API}/api/health?year=${year}&month=${month}`);
             setRecords(res.data);
         } catch (err) {
             console.error("健康チェックデータ取得エラー", err);
         }
-    }, [year, month]); // ← 依存配列を指定！
+    }, [year, month]);
 
     const fetchNames = useCallback(async () => {
         try {
-            const res = await axios.get("http://localhost:5000/api/names");
+            const res = await axios.get(`${API}/api/names`);
             setNames(res.data.map(n => n.name));
         } catch (err) {
             console.error("氏名取得エラー", err);
@@ -26,7 +27,7 @@ export const useHealthRecords = (year, month) => {
 
     const postRecord = async (record) => {
         try {
-            await axios.post("http://localhost:5000/api/health", record);
+            await axios.post(`${API}/api/health`, record);
             await fetchRecords();
         } catch (err) {
             console.error("送信失敗", err);
@@ -35,7 +36,7 @@ export const useHealthRecords = (year, month) => {
 
     useEffect(() => {
         fetchRecords();
-    }, [fetchRecords]); // ✅ 依存配列に fetchRecords を追加！
+    }, [fetchRecords]);
 
     useEffect(() => {
         fetchNames();

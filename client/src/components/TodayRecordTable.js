@@ -1,4 +1,4 @@
-function TodayRecordTable({ names, records, todayStr }) {
+export const TodayRecordTable = ({ names, records, todayStr }) => {
     const today = new Date(todayStr);
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
@@ -48,6 +48,4 @@ function TodayRecordTable({ names, records, todayStr }) {
             </table>
         </>
     );
-}
-
-export default TodayRecordTable;
+};

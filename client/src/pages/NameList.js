@@ -1,15 +1,16 @@
-// src/pages/NameList.js
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-function NameList() {
+const API = process.env.REACT_APP_API_URL;
+
+export const NameList = () => {
     const [newName, setNewName] = useState("");
     const [names, setNames] = useState([]);
-    const navigate = useNavigate(); // ← 追加！
+    const navigate = useNavigate();
 
     const fetchNames = async () => {
-        const res = await axios.get("http://localhost:5000/api/names");
+        const res = await axios.get(`${API}/api/names`);
         setNames(res.data);
     };
 
@@ -19,18 +20,18 @@ function NameList() {
 
     const handleAdd = async () => {
         if (!newName.trim()) return;
-        await axios.post("http://localhost:5000/api/names", { name: newName });
+        await axios.post(`${API}/api/names`, { name: newName });
         setNewName("");
         fetchNames();
     };
 
     const handleDelete = async (id) => {
-        await axios.delete(`http://localhost:5000/api/names/${id}`);
+        await axios.delete(`${API}/api/names/${id}`);
         fetchNames();
     };
 
     const handleBack = () => {
-        navigate(-1); // 1つ前のページに戻る（React Router v6/v7）
+        navigate(-1);
     };
 
     return (
@@ -63,6 +64,4 @@ function NameList() {
             </ul>
         </div>
     );
-}
-
-export default NameList;
+};
