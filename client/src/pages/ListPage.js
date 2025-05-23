@@ -11,6 +11,7 @@ export const ListPage = () => {
     const navigate = useNavigate();
     const [records, setRecords] = useState([]);
     const [names, setNames] = useState([]);
+    const [selectedName, setSelectedName] = useState(""); // ← 追加
     const [year, setYear] = useState(new Date().getFullYear());
     const [month, setMonth] = useState(new Date().getMonth() + 1);
     const [view, setView] = useState("condition");
@@ -38,7 +39,7 @@ export const ListPage = () => {
 
     useEffect(() => {
         axios.get(`${API}/api/health?year=${year}&month=${month}`)
-            .then(res => setRecords(res.data));
+          .then(res => setRecords(res.data));
 
         const newMonth = formatMonth(year, month);
         setStartDate(newMonth);
@@ -47,36 +48,66 @@ export const ListPage = () => {
 
     useEffect(() => {
         axios.get(`${API}/api/names`)
-            .then(res => setNames(res.data.map(n => n.name)));
+          .then(res => setNames(res.data.map(n => n.name)));
     }, []);
 
+    // ✅ フィルターされたデータと名前リスト
+    const filteredRecords = selectedName
+      ? records.filter(r => r.name === selectedName)
+      : records;
+
+    const filteredNames = selectedName
+      ? [selectedName]
+      : names;
+
     return (
-        <div style={{ padding: 20 }}>
-            <button className="back-btn" onClick={() => navigate("/")} style={{ marginBottom: 20 }}>
-                ← 戻る
-            </button>
+      <div style={{ padding: 20 }}>
+          <button className="back-btn" onClick={() => navigate("/")} style={{ marginBottom: 20 }}>
+              ← 戻る
+          </button>
 
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap" }}>
-                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-                    <div style={{ display: 'flex', gap: '12px' }}>
-                        <button className={`btn ${view === "condition" ? "" : "btn-active"}`} onClick={() => setView("condition")}>体調一覧</button>
-                        <button className={`btn ${view === "task" ? "" : "btn-active"}`} onClick={() => setView("task")}>作業一覧</button>
-                    </div>
-                    <h2>{view === "condition" ? "🩺 体調一覧" : "🛠 作業一覧"}（{year}年 {month}月）</h2>
-                    <MonthNavigation year={year} month={month} setYear={setYear} setMonth={setMonth} />
-                </div>
-                {view === "condition" && (
-                    <CsvExportPanel
-                        startDate={startDate}
-                        endDate={endDate}
-                        setStartDate={setStartDate}
-                        setEndDate={setEndDate}
-                        names={names}
-                    />
-                )}
-            </div>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  <div style={{ display: 'flex', gap: '12px' }}>
+                      <button className={`btn ${view === "condition" ? "" : "btn-active"}`} onClick={() => setView("condition")}>体調一覧</button>
+                      <button className={`btn ${view === "task" ? "" : "btn-active"}`} onClick={() => setView("task")}>作業一覧</button>
+                  </div>
+                  <h2>{view === "condition" ? "🩺 体調一覧" : "🛠 作業一覧"}（{year}年 {month}月）</h2>
+                  <MonthNavigation year={year} month={month} setYear={setYear} setMonth={setMonth} />
 
-            <HealthTable {...{ uniqueDates, names, records, view, todayStr }} />
-        </div>
+                  <label>
+                      メンバー選択：
+                      <select
+                        value={selectedName}
+                        onChange={(e) => setSelectedName(e.target.value)}
+                        style={{ marginLeft: 8 }}
+                      >
+                          <option value="">全員</option>
+                          {names.map(name => (
+                            <option key={name} value={name}>{name}</option>
+                          ))}
+                      </select>
+                  </label>
+              </div>
+
+              {view === "condition" && (
+                <CsvExportPanel
+                  startDate={startDate}
+                  endDate={endDate}
+                  setStartDate={setStartDate}
+                  setEndDate={setEndDate}
+                  names={filteredNames}
+                />
+              )}
+          </div>
+
+          <HealthTable
+            uniqueDates={uniqueDates}
+            names={filteredNames}
+            records={filteredRecords}
+            view={view}
+            todayStr={todayStr}
+          />
+      </div>
     );
 };
