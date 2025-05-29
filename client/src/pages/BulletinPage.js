@@ -1,41 +1,42 @@
-import { useState, useEffect } from 'react'
-import axios from 'axios'
-import { BulletinForm } from '../components/bulletin/BulletinForm'
-import { BulletinList } from '../components/bulletin/BulletinList'
-import { useMemberNames } from '../hooks/useMemberNames'
-import { useNavigate } from 'react-router-dom'
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const API = process.env.REACT_APP_API_URL
+import { useBulletins } from '../hooks/bulletin/useBulletins';
+import { useEditBulletinForm } from '../hooks/bulletin/useEditBulletinForm';
+import { useMemberNames } from '../hooks/useMemberNames';
+
+import { BulletinForm } from '../components/bulletin/BulletinForm';
+import { BulletinList } from '../components/bulletin/BulletinList';
 
 export const BulletinPage = () => {
-  const [bulletins, setBulletins] = useState([])
-  const names = useMemberNames()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const names = useMemberNames();
 
-  const fetchBulletins = async () => {
-    try {
-      const res = await axios.get(`${API}/api/bulletins`)
-      setBulletins(res.data)
-    } catch (err) {
-      console.error('掲示取得エラー:', err)
-    }
-  }
+  const {
+    bulletins,
+    fetchBulletins,
+    deleteBulletin,
+    updateCheckStatus,
+  } = useBulletins();
 
-  const handleMarkAsRead = async (id, name, checked) => {
-    try {
-      await axios.post(`${API}/api/bulletins/${id}/read`, {
-        name,
-        checked,
-      })
-      await fetchBulletins() // 更新直後に再取得して反映
-    } catch (err) {
-      console.error('チェック更新エラー:', err)
-    }
-  }
+  const {
+    editBulletinId,
+    editForm,
+    handleEditClick,
+    handleEditChange,
+    handleEditSubmit,
+    handleCancelEdit,
+  } = useEditBulletinForm(fetchBulletins);
 
+  // 初回のみ取得
   useEffect(() => {
-    fetchBulletins()
-  }, [])
+    fetchBulletins();
+  }, []);
+
+  // 確認状態の更新
+  const handleMarkAsRead = async (id, name, checked) => {
+    await updateCheckStatus(id, name, checked);
+  };
 
   return (
     <div style={{ padding: 20 }}>
@@ -46,15 +47,27 @@ export const BulletinPage = () => {
       >
         ← 戻る
       </button>
+
       <h2>📢 掲示板</h2>
-      <BulletinForm names={names} onPost={fetchBulletins}/>
+
+      {/* 掲示を投稿 */}
+      <BulletinForm names={names} onPost={fetchBulletins} />
+
+      {/* 掲示リスト */}
       <BulletinList
         bulletins={bulletins}
         names={names}
         onMarkAsRead={handleMarkAsRead}
+        onEditClick={handleEditClick}
+        onDeleteClick={deleteBulletin}
+        editBulletinId={editBulletinId}
+        editForm={editForm}
+        onEditChange={handleEditChange}
+        onEditSubmit={handleEditSubmit}
+        onCancelEdit={handleCancelEdit}
       />
     </div>
-  )
-}
+  );
+};
 
-export default BulletinPage
+export default BulletinPage;

@@ -1,25 +1,28 @@
-// hooks/useInitializeHealthForm.js
-import { useEffect } from 'react'
-import { EXCLUDED_CONDITIONS } from '../constants/excludedConditions'
+import { useEffect, useRef } from 'react';
 
 export const useInitializeHealthForm = ({ form, records, nameFromQuery, todayStr }) => {
+  const initialized = useRef(false); // 初回だけ実行するためのフラグ
+
   useEffect(() => {
-    if (!nameFromQuery || records.length === 0) return
+    if (initialized.current) return;
+    if (!nameFromQuery || records.length === 0) return;
 
     const existing = records.find(
       (record) =>
         record.name.trim() === nameFromQuery.trim() &&
-        record.date === todayStr,
-    )
+        record.date === todayStr
+    );
+
+    console.log("★既存記録", existing);
 
     if (existing) {
-      if (!EXCLUDED_CONDITIONS.includes(existing.condition)) {
-        form.setTask(existing.task || '')
-        form.setKy(existing.ky || '')
-      } else {
-        form.setTask(existing.condition)
-        form.setKy(existing.condition)
-      }
+      form.setTask(existing.task || '');
+      form.setKy(existing.ky || '');
+      form.setCondition(existing.condition || '');
+      form.setBreakfast(existing.breakfast || '');
+      form.setConditionReason(existing.conditionReason || '');
     }
-  }, [records, nameFromQuery, todayStr, form])
-}
+
+    initialized.current = true;
+  }, [records, nameFromQuery, todayStr, form]);
+};

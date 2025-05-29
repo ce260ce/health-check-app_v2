@@ -31,8 +31,8 @@ export const AdminPage = () => {
             await axios.post(`${API}/api/health`, {
                 name,
                 condition: "年休",
-                task: "",
-                ky: "",
+                task: "年休",
+                ky: "年休",
                 date: todayStr,
             });
         }

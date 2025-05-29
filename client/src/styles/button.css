@@ -26,6 +26,7 @@
 
 /* アクティブ状態のボタン */
 .btn-active {
+    background-color: #e5e7eb; /* 薄いグレー */
     color: black;
 }
 

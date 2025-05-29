@@ -12,11 +12,18 @@ app.use(cors())
 app.use(express.json())
 app.use('/uploads', express.static('uploads'))
 
-mongoose.connect('mongodb://localhost:27017/healthcheck', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-}).then(() => console.log('✅ MongoDB Connected'))
-  .catch((err) => console.error('MongoDB connection error:', err))
+const connectWithRetry = () => {
+  mongoose.connect('mongodb://mongo:27017/healthcheck', {
+    // オプションは不要（v7以降はデフォルト有効）
+  })
+    .then(() => console.log('✅ MongoDB Connected'))
+    .catch(err => {
+      console.error('❌ MongoDB connection failed. Retrying in 5 seconds...', err);
+      setTimeout(connectWithRetry, 5000);
+    });
+};
+
+connectWithRetry();
 
 // ----------------- Health -----------------
 const HealthSchema = new mongoose.Schema({
@@ -389,5 +396,43 @@ app.post('/api/bulletins/:id/read', async (req, res) => {
     res.status(500).json({ error: 'チェック更新失敗' })
   }
 })
+
+app.delete('/api/bulletins/:id', async (req, res) => {
+  try {
+    const result = await Bulletin.findByIdAndDelete(req.params.id)
+    if (!result) return res.status(404).json({ error: '掲示が見つかりません' })
+    res.json({ message: '掲示を削除しました' })
+  } catch (err) {
+    console.error('掲示削除エラー:', err)
+    res.status(500).json({ error: '削除に失敗しました' })
+  }
+})
+
+app.put('/api/bulletins/:id', async (req, res) => {
+  try {
+    const { title, description, visibleUntil, postedBy } = req.body
+
+    const updated = await Bulletin.findByIdAndUpdate(
+      req.params.id,
+      { title, description, visibleUntil, postedBy },
+      { new: true }
+    )
+
+    if (!updated) return res.status(404).json({ error: '掲示が見つかりません' })
+
+    res.json({ message: '掲示を更新しました', bulletin: updated })
+  } catch (err) {
+    console.error('掲示更新エラー:', err)
+    res.status(500).json({ error: '更新に失敗しました' })
+  }
+})
+
+const cleanupOldUploads = require('./utils/cleanupOldUploads');
+
+// 起動時に一度実行
+cleanupOldUploads();
+
+// 定期実行（例: 12時間ごと）
+setInterval(cleanupOldUploads, 24 * 60 * 60 * 1000); // 毎12時間
 
 app.listen(5500, () => console.log('🚀 APIサーバー起動: http://localhost:5500'))

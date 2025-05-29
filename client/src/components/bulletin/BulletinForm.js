@@ -21,37 +21,106 @@ export const BulletinForm = ({ names, onPost }) => {
       formData.append('files', file)
     }
     await axios.post(`${API}/api/bulletins`, formData)
+    await onPost()
     setTitle('')
     setDescription('')
     setVisibleUntil('')
     setFiles([])
     setPostedBy('')
-    onPost()
+  }
+
+  const handleFileDelete = (index) => {
+    const updated = [...files]
+    updated.splice(index, 1)
+    setFiles(updated)
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ marginBottom: 20 }}>
-      <h3>新しい掲示を投稿</h3>
-      <div>
-        <label>タイトル:</label>
-        <input value={title} onChange={(e) => setTitle(e.target.value)} required/>
+    <form
+      onSubmit={handleSubmit}
+      style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '30px' }}
+    >
+      <h3>📢 新しい掲示を投稿</h3>
+
+      <input
+        name="title"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="タイトル"
+        required
+        style={{ width: '30%' }}
+      />
+
+      <textarea
+        name="description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+        placeholder="内容"
+        rows={3}
+        required
+        style={{ width: '30%' }}
+      />
+
+      {/* 📅 掲載期限ラベル付き日付入力 */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <label htmlFor="visibleUntil"><strong>📅 掲載期限（日付）</strong></label>
+        <input
+          type="date"
+          id="visibleUntil"
+          name="visibleUntil"
+          value={visibleUntil}
+          onChange={(e) => setVisibleUntil(e.target.value)}
+          required
+          style={{ width: 'fit-content' }}
+        />
       </div>
-      <div>
-        <label>内容:</label>
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)} required/>
+
+
+      {files.length > 0 && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', width: '30%' }}>
+          {files.map((f, i) => (
+            <div
+              key={i}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                backgroundColor: '#f9f9f9',
+                padding: '4px 8px',
+                borderRadius: '4px',
+              }}
+            >
+              <span>📎 {f.name}</span>
+              <button
+                type="button"
+                className="btn"
+                onClick={() => handleFileDelete(i)}
+                style={{ backgroundColor: '#e5e7eb', color: '#000', padding: '2px 8px' }}
+              >
+                ❌
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* 📎 添付ファイル */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <label htmlFor="file"><strong>📎 添付ファイル</strong></label>
+        <input
+          type="file"
+          id="file"
+          name="files"
+          multiple
+          onChange={(e) => setFiles(Array.from(e.target.files))}
+          style={{ width: '30%' }}
+        />
       </div>
+
       <div>
-        <label>掲示期限:</label>
-        <input type="date" value={visibleUntil} onChange={(e) => setVisibleUntil(e.target.value)} required/>
-      </div>
-      <div>
-        <label>ファイル添付:</label>
-        <input type="file" multiple onChange={(e) => setFiles([...e.target.files])}/>
-      </div>
-      <div>
-        <label>投稿者:</label>
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-          {names.map(name => (
+        <label><strong>👤 投稿者</strong></label>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px', marginBottom: '8px' }}>
+          {names.map((name) => (
             <button
               type="button"
               key={name}
@@ -69,7 +138,15 @@ export const BulletinForm = ({ names, onPost }) => {
           ))}
         </div>
       </div>
-      <button type="submit" disabled={!postedBy}>投稿する</button>
+
+      <button
+        className="btn"
+        type="submit"
+        disabled={!postedBy}
+        style={{ width: 'fit-content', alignSelf: 'start' }}
+      >
+        登録する
+      </button>
     </form>
   )
 }

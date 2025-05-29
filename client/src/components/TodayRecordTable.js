@@ -16,8 +16,8 @@ export const TodayRecordTable = ({ names, records, todayStr }) => {
                     <tr>
                         <th>氏名</th>
                         <th>体調/朝食</th>
-                        <th>作業内容</th>
-                        <th>作業KY</th>
+                        <th>本日の作業内容</th>
+                        <th>危険KYワンポイント</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,14 +26,17 @@ export const TodayRecordTable = ({ names, records, todayStr }) => {
 
                         const conditionText = (() => {
                             if (record.condition === "〇") {
-                                return `〇 / ${record.breakfast ?? ""}`;
+                                return `〇${record.breakfast ? ` / ${record.breakfast}` : ""}`;
                             } else if (record.condition === "年休") {
                                 return "年休";
                             } else if (record.condition) {
-                                return `${record.condition}${record.conditionReason ? `（${record.conditionReason}）` : ""} / ${record.breakfast ?? ""}`;
+                                const reasonPart = record.conditionReason ? `（${record.conditionReason}）` : "";
+                                const breakfastPart = record.breakfast ? ` / ${record.breakfast}` : "";
+                                return `${record.condition}${reasonPart}${breakfastPart}`;
                             }
                             return "";
                         })();
+
 
                         return (
                             <tr key={name}>

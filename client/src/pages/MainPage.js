@@ -77,46 +77,58 @@ export const MainPage = ({ onOpenNameList }) => {
             </div>
 
             {/* 右：掲示板（未読） */}
-            <div style={{ width: '320px' }}>
+            <div style={{ flex: 1 }}>
               {bulletins.length > 0 && (
                 <div>
                   <h3>📢 未読の掲示</h3>
 
-                  {bulletins.slice(0, 2).map(b => (
-                    <MainBulletinCard
-                      key={b._id}
-                      bulletin={b}
-                      userName={nameFromQuery}
-                      onMarkAsRead={handleMarkAsRead}
-                    />
-                  ))}
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '1fr 1fr',
+                      gap: '16px',
+                    }}
+                  >
+                    {bulletins.slice(0, 4).map((b) => (
+                      <MainBulletinCard
+                        key={b._id}
+                        bulletin={b}
+                        userName={nameFromQuery}
+                        onMarkAsRead={handleMarkAsRead}
+                      />
+                    ))}
+                  </div>
 
-                  {bulletins.length > 2 && (
-                    <p style={{ fontStyle: 'italic', color: '#555' }}>
-                      その他 {bulletins.length - 2} 件の未読の掲示があります
+                  {bulletins.length > 4 && (
+                    <p style={{ fontStyle: 'italic', color: '#555', marginTop: '8px' }}>
+                      その他 {bulletins.length - 4} 件の未読の掲示があります
                     </p>
                   )}
                 </div>
               )}
             </div>
+
+
           </div>
 
-          <TaskNotification nameFromQuery={nameFromQuery}/>
 
-          <hr style={{ margin: '20px 0' }}/>
+          <TaskNotification nameFromQuery={nameFromQuery} />
 
-          <LinkSection nameFromQuery={nameFromQuery}/>
+          <hr style={{ margin: '20px 0' }} />
 
-          <hr style={{ margin: '40px 0' }}/>
+          <LinkSection nameFromQuery={nameFromQuery} />
 
-          <TodayRecordTable names={names} records={records} todayStr={todayStr}/>
+          <hr style={{ margin: '40px 0' }} />
+
+          <TodayRecordTable names={names} records={records} todayStr={todayStr} />
 
           <button className="btn" onClick={() => navigate('/list')}>📊 一覧表示</button>
         </>
       ) : (
         <p>読み込み中...</p>
-      )}
-    </div>
+      )
+      }
+    </div >
   )
 }
 

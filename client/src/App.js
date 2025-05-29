@@ -10,19 +10,19 @@ import { LinkBuilderPage } from './pages/LinkBuilderPage'
 import './styles/button.css'
 import BulletinPage from './pages/BulletinPage'
 
-function App () {
+function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<MainPage/>}/>
-        <Route path="/select" element={<SelectUserPage/>}/>
-        <Route path="/list" element={<ListPage/>}/>
-        <Route path="/names" element={<NameList/>}/>
-        <Route path="/admin" element={<AdminPage/>}/>
-        <Route path="/today" element={<TodayRecordPage/>}/>
-        <Route path="/tasks" element={<TaskPage/>}/>
-        <Route path="/link-builder" element={<LinkBuilderPage/>}/>
-        <Route path="/bulletin" element={<BulletinPage/>}/>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/select" element={<SelectUserPage />} />
+        <Route path="/list" element={<ListPage />} />
+        <Route path="/names" element={<NameList />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/today" element={<TodayRecordPage />} />
+        <Route path="/tasks" element={<TaskPage />} />
+        <Route path="/link-builder" element={<LinkBuilderPage />} />
+        <Route path="/bulletin" element={<BulletinPage />} />
       </Routes>
     </Router>
   )
