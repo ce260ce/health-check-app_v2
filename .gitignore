@@ -1,0 +1,11 @@
+.DS_Store
+*.log
+node_modules/
+build/
+dist/
+coverage/
+.eslintcache
+.env
+.env.*.local
+docker-data/
+tmp/
