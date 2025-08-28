@@ -102,21 +102,27 @@
   }
   
   .todo-category-list {
+    display: grid;           /* ← 追加 */
+    gap: 8px;  
     list-style: none;
     padding-left: 0;
     margin: 8px 0 0;
+    list-style: none;
   }
-  
   .todo-category-pill {
     display: flex;
     align-items: center;
-    gap: 6px; /* ← ボタンとの隙間を追加 */
-    margin-bottom: 4px;
+    justify-content: space-between; /* ← 追加 */
+    gap: 8px;                       /* ← 既存 6px を少し広げるなら */
+    padding: 6px 10px;              /* ← 追加：クリック領域を少し広げる */
+    border: 1px solid var(--line);  /* ← 追加：pill感 */
+    border-radius: 8px;             /* ← 追加 */
+    background: #fff;               /* ← 追加 */
   }
   
   .todo-category-name {
     font-size: 14px;
-    color: var(--text);
+    color: var(--text-dark);
   }
   
   .todo-category-del {
@@ -134,3 +140,22 @@
     color: crimson;
   }
   
+  /* ドラッグ中の視覚フィードバック */
+.todo-category-pill[aria-grabbed="true"] {
+  opacity: 0.65;
+  outline: 2px dashed #9ca3af;
+}
+
+/* 固定カテゴリ（is-locked 付与時）の見た目 */
+.todo-category-pill.is-locked {
+  opacity: 0.7;
+  background: #f9fafb;
+}
+
+/* ドラッグ可能っぽさ */
+.todo-category-pill[draggable="true"] {
+  cursor: grab;
+}
+.todo-category-pill[draggable="true"]:active {
+  cursor: grabbing;
+}

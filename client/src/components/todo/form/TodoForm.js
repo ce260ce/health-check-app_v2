@@ -1,5 +1,5 @@
 // src/components/todo/TodoForm.js
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./TodoForm.css";
 
 export function TodoForm({ onAdd, categories }) {
@@ -7,8 +7,15 @@ export function TodoForm({ onAdd, categories }) {
     const [notes, setNotes] = useState("");
     const [refUrl, setRefUrl] = useState("");
     const [due, setDue] = useState("");
-    const [priority, setPriority] = useState("中");
+    // ★ 内部値は英語enumに統一
+    const [priority, setPriority] = useState("medium");
     const [group, setGroup] = useState(categories?.[0] || "未分類");
+
+    // カテゴリ追加/削除で先頭が変わった時の保護
+    useEffect(() => {
+        if (!categories?.length) return;
+        if (!categories.includes(group)) setGroup(categories[0]);
+    }, [categories, group]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -20,7 +27,7 @@ export function TodoForm({ onAdd, categories }) {
             notes: notes.trim(),
             refUrl: refUrl.trim(),
             due,
-            priority,
+            priority, // ★ "high" | "medium" | "low"
             group,
             createdAt: new Date().toISOString(),
         });
@@ -30,21 +37,16 @@ export function TodoForm({ onAdd, categories }) {
         setNotes("");
         setRefUrl("");
         setDue("");
-        setPriority("中");
+        setPriority("medium");
         setGroup(categories?.[0] || "未分類");
     };
 
-    // Enterで送信されるのを防ぎたい入力があればここで制御（任意）
     const preventEnterSubmit = (e) => {
         if (e.key === "Enter" && !e.shiftKey) e.preventDefault();
     };
 
     return (
         <form className="todo-card field-stack" onSubmit={handleSubmit}>
-            {/* タイトルが必要なら表示。外側で見出しを置いているなら削ってOK */}
-            {/* <h3 className="todo-title">📝 タスク追加</h3> */}
-
-            {/* 上段：やること・メモ */}
             <div className="row-stack">
                 <input
                     type="text"
@@ -64,7 +66,6 @@ export function TodoForm({ onAdd, categories }) {
                 />
             </div>
 
-            {/* 中段：1行で URL / 日付 / 優先度 / カテゴリ */}
             <div className="row-4">
                 <input
                     type="url"
@@ -79,15 +80,17 @@ export function TodoForm({ onAdd, categories }) {
                     value={due}
                     onChange={(e) => setDue(e.target.value)}
                 />
+                {/* ★ valueは英語enum */}
                 <select
                     className="select"
                     value={priority}
                     onChange={(e) => setPriority(e.target.value)}
                 >
-                    <option value="高">🔥 高</option>
-                    <option value="中">⏺ 中</option>
-                    <option value="低">⚪ 低</option>
+                    <option value="high">🔥 高</option>
+                    <option value="medium">⏺ 中</option>
+                    <option value="low">⚪ 低</option>
                 </select>
+
                 <select
                     className="select"
                     value={group}
@@ -101,7 +104,6 @@ export function TodoForm({ onAdd, categories }) {
                 </select>
             </div>
 
-            {/* 下段：追加ボタン */}
             <button type="submit" className="btn-primary">＋ 追加</button>
         </form>
     );

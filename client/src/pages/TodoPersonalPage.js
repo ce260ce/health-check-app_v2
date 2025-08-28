@@ -20,6 +20,7 @@ export function TodoPersonalPage() {
         false
     );
 
+    // 表示用のグルーピング（カテゴリ順に従う）
     const view = useMemo(() => {
         const grouped = {};
         for (const g of categories) grouped[g] = [];
@@ -51,6 +52,7 @@ export function TodoPersonalPage() {
         if (!categories.includes(name)) return;
 
         setCategories((prev) => prev.filter((c) => c !== name));
+        // そのカテゴリのアイテムは「未分類」へ退避
         setItems((prev) =>
             prev.map((it) => (it.group === name ? { ...it, group: DEFAULT_GROUP } : it))
         );
@@ -59,14 +61,15 @@ export function TodoPersonalPage() {
     const addItem = (task) => {
         const group = task.group || DEFAULT_GROUP;
         const nextOrder =
-            (view[group] && view[group].length > 0
+            view[group] && view[group].length > 0
                 ? Math.max(...view[group].map((x) => x.order ?? 0)) + 1
-                : 0);
+                : 0;
 
         setItems((prev) => [
             ...prev,
             {
                 ...task,
+                group,
                 order: nextOrder,
                 done: false,
             },
@@ -74,13 +77,32 @@ export function TodoPersonalPage() {
     };
 
     const updateItem = (id, patch) => {
-        setItems((prev) =>
-            prev.map((it) => (it.id === id ? { ...it, ...patch } : it))
-        );
+        setItems((prev) => prev.map((it) => (it.id === id ? { ...it, ...patch } : it)));
     };
 
     const removeItem = (id) => {
         setItems((prev) => prev.filter((it) => it.id !== id));
+    };
+
+    // ★ 並べ替えコールバック（ドラッグ＆ドロップ／▲▼ボタンから呼ばれる）
+    const onReorderCategories = (nextOrder) => {
+        // 1) 重複除去しつつ順序を維持
+        const seen = new Set();
+        const unique = nextOrder.filter((c) => {
+            if (seen.has(c)) return false;
+            seen.add(c);
+            return true;
+        });
+
+        // 2) 既存カテゴリで nextOrder に含まれなかったものを末尾に補完
+        for (const c of categories) {
+            if (!seen.has(c)) unique.push(c);
+        }
+
+        // 3) 空保護（理論上空にならないが保険）
+        if (unique.length === 0) unique.push(DEFAULT_GROUP);
+
+        setCategories(unique);
     };
 
     return (
@@ -98,6 +120,8 @@ export function TodoPersonalPage() {
             onUpdateItem={updateItem}
             onRemoveItem={removeItem}
             setItems={setItems}
+            // ★ 追加
+            onReorderCategories={onReorderCategories}
         />
     );
 }

@@ -1,14 +1,17 @@
-version: '3.8'
-
 services:
   client:
+    image: null # ベースの image を無効化
     build:
       context: ./client
       dockerfile: Dockerfile.dev
+    entrypoint: [] # イメージ側の ENTRYPOINT（例: ["node"]）を無効化
+    command: [ "npm", "run", "start" ] # 開発サーバを起動
     volumes:
       - ./client:/app
       - /app/node_modules
     ports:
-      - "3001:3000"
+      - "3001:3000" # 開発用のポートだけにする
     environment:
       - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - server

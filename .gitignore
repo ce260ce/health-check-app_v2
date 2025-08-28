@@ -9,3 +9,4 @@ coverage/
 .env.*.local
 docker-data/
 tmp/
+health-client.tar

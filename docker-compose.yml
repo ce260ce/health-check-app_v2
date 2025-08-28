@@ -39,7 +39,7 @@ services:
       - server
     networks:
       - app-network
-    # command: nginx -g 'daemon off;'  #←ラズパイ時有効必要かも
+    command: nginx -g 'daemon off;'
 
 networks:
   app-network:
