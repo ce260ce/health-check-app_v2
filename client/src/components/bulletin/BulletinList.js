@@ -1,7 +1,4 @@
-import { useEffect } from 'react'
 import { BulletinCard } from './BulletinCard'
-import { useBulletins } from '../../hooks/bulletin/useBulletins'
-import { useEditBulletinForm } from '../../hooks/bulletin/useEditBulletinForm'
 
 export const BulletinList = ({
   bulletins,

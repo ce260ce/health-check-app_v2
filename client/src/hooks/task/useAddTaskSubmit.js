@@ -12,6 +12,7 @@ export function useAddTaskSubmit({ resetForm, fetchTasks }) {
         const formData = new FormData();
         formData.append('title', addForm.title);
         formData.append('description', addForm.description);
+        formData.append('startDate', addForm.startDate);
         formData.append('dueDate', addForm.dueDate);
 
         if (addFiles.length > 0) {

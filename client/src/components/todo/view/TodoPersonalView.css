@@ -1,0 +1,136 @@
+:root {
+    --line: #e5e7eb;
+    --muted: #6b7280;
+    --bg-card: #f8fafc;
+    --bg-board: #fff;
+    --text-dark: #111827;
+  }
+  
+  /* ページ全体 */
+  .todo-page {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    height: calc(100vh - 64px);
+    box-sizing: border-box;
+  }
+  
+  /* タイトル行 */
+  .todo-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  
+  .todo-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+  
+  .todo-subtitle {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  
+  /* トグルバー */
+  .todo-toggle-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-card);
+  }
+  
+  .todo-toggle-btn {
+    border: 1px solid var(--line);
+    background: #fff;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  .todo-toggle-msg {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  
+  /* 上段フォーム行 */
+  .todo-forms-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .todo-card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 12px;
+    background: var(--bg-card);
+  }
+  
+  .todo-card-left {
+    flex: 1;
+  }
+  
+  .todo-card-right {
+    width: 320px;
+  }
+  
+  /* カテゴリタイトルを小さめに */
+  .todo-category-title {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+  }
+  
+  /* 下段ボード */
+  .todo-board {
+    flex: 1;
+    overflow: auto;
+    padding: 4px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg-board);
+  }
+  
+  .todo-category-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 8px 0 0;
+  }
+  
+  .todo-category-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px; /* ← ボタンとの隙間を追加 */
+    margin-bottom: 4px;
+  }
+  
+  .todo-category-name {
+    font-size: 14px;
+    color: var(--text);
+  }
+  
+  .todo-category-del {
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  
+  .todo-category-del:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+    color: crimson;
+  }
+  

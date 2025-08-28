@@ -21,7 +21,14 @@ export const TaskNotification = ({ nameFromQuery }) => {
         const now = new Date()
         now.setHours(0, 0, 0, 0)
 
-        const incomplete = tasks.filter(task => !task.checkedBy?.[nameFromQuery])
+        const incomplete = tasks.filter(task => {
+          const start = new Date(task.startDate)
+          start.setHours(0, 0, 0, 0)
+          return (
+            !task.checkedBy?.[nameFromQuery] &&
+            start <= now
+          )
+        })
 
         let dueTodayOrPast = 0
         let dueSoon = 0
@@ -73,12 +80,12 @@ export const TaskNotification = ({ nameFromQuery }) => {
     >
       <p style={{ margin: 0, color: '#856404', lineHeight: 1.6 }}>
         ⚠️ {nameFromQuery} さんのタスク状況：
-        <br/>
+        <br />
         {incompleteTaskCount.dueTodayOrPast > 0 && (
-          <>🔴 納期が当日または過ぎているタスク：{incompleteTaskCount.dueTodayOrPast} 件<br/></>
+          <>🔴 納期が当日または過ぎているタスク：{incompleteTaskCount.dueTodayOrPast} 件<br /></>
         )}
         {incompleteTaskCount.dueSoon > 0 && (
-          <>🟡 納期が残り3日以内のタスク：{incompleteTaskCount.dueSoon} 件<br/></>
+          <>🟡 納期が残り3日以内のタスク：{incompleteTaskCount.dueSoon} 件<br /></>
         )}
         {incompleteTaskCount.other > 0 && (
           <>⚪ その他の未完了タスク：{incompleteTaskCount.other} 件</>

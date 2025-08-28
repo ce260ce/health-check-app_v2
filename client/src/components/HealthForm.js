@@ -1,5 +1,5 @@
 import './HealthForm.css'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { EXCLUDED_CONDITIONS } from '../constants/excludedConditions'
 
 export const HealthForm = ({
@@ -18,7 +18,6 @@ export const HealthForm = ({
       setBreakfast('')
     }
   }, [condition, setTask, setKy, setBreakfast, task, ky])
-
 
   const toYMD = (dateStr) => {
     const d = new Date(dateStr);
@@ -54,10 +53,59 @@ export const HealthForm = ({
   };
 
   const [showMessage, setShowMessage] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
   const handleSubmit = () => {
-    onSubmit();           // 元の送信処理
-    setShowMessage(true); // メッセージ表示
-    setTimeout(() => setShowMessage(false), 5000); // 5秒後に非表示
+    onSubmit();                // 元の送信処理
+    setShowMessage(true);      // ⛑️ メッセージ表示
+    setShowToast(true);        // ✅ トースト表示
+
+    // 5秒後に消える
+    setTimeout(() => setShowMessage(false), 5000);
+    setTimeout(() => setShowToast(false), 3000);
+  };
+
+  const SIDE_IMG_NS = 'healthForm.sideImageDataUrl';
+  const keyOf = (n) => `${SIDE_IMG_NS}:${n ?? ''}`;
+
+  const fileInputRef = useRef(null);
+  const [sideImageDataUrl, setSideImageDataUrl] = useState('');
+
+  // 氏名が変わったら、その人用の画像を読み込む
+  useEffect(() => {
+    if (!name) { setSideImageDataUrl(''); return; }
+    const saved = localStorage.getItem(keyOf(name));
+    setSideImageDataUrl(saved || '');
+  }, [name]);
+
+  const handleChooseFile = () => {
+    if (!name) { alert('先に氏名を選択してください。'); return; }
+    fileInputRef.current?.click();
+  };
+
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!name) { e.target.value = ''; return; }
+
+    // 画像のみ & 2MB 上限（必要に応じて調整）
+    if (!file.type.startsWith('image/')) { alert('画像ファイルを選択してください。'); e.target.value = ''; return; }
+    if (file.size > 2 * 1024 * 1024) { alert('ファイルサイズは2MB以下にしてください。'); e.target.value = ''; return; }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result;
+      setSideImageDataUrl(dataUrl);
+      localStorage.setItem(keyOf(name), dataUrl);   // ← メンバー別に保存
+      e.target.value = '';
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const clearSideImage = () => {
+    if (!name) return;
+    setSideImageDataUrl('');
+    localStorage.removeItem(keyOf(name));           // ← 選択中メンバーの画像だけ削除
   };
   return (
     <div className="health-form">
@@ -81,24 +129,15 @@ export const HealthForm = ({
           <label>
             体調 {(() => {
               switch (condition) {
-                case '〇':
-                  return '😊';
-                case '△':
-                  return '😐';
-                case '×':
-                  return '😷';
-                case '年休':
-                  return '🏖️';
-                case 'ウェルポ':
-                  return '🌿';
-                case '出張':
-                  return '🚄';
-                case '離業':
-                  return '🏈';
-                case 'ゼ勤':
-                  return '🏝️';
-                default:
-                  return '';
+                case '〇': return '😊';
+                case '△': return '😐';
+                case '×': return '😷';
+                case '年休': return '🏖️';
+                case 'ウェルポ': return '🌿';
+                case '出張': return '🚄';
+                case '離業': return '🏈';
+                case 'ゼ勤': return '🏝️';
+                default: return '';
               }
             })()}
           </label><br />
@@ -114,7 +153,6 @@ export const HealthForm = ({
           </select>
         </div>
 
-
         {(condition === '△' || condition === '×') && (
           <div>
             <label>体調の理由：</label><br />
@@ -127,6 +165,28 @@ export const HealthForm = ({
         )}
       </div>
       <br />
+
+      <div className="side-image-box">
+        {sideImageDataUrl ? (
+          <>
+            <img src={sideImageDataUrl} alt="サイド画像" />
+            <button type="button" className="side-image-clear" onClick={clearSideImage} title="画像を消す">×</button>
+          </>
+        ) : (
+          <>
+            <button type="button" className="side-image-set" onClick={handleChooseFile}>
+              お好きな画像を設定ください
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              style={{ display: 'none' }}
+            />
+          </>
+        )}
+      </div>
 
       {!EXCLUDED_CONDITIONS.includes(condition) && (
         <>
@@ -183,6 +243,29 @@ export const HealthForm = ({
           </span>
         )}
       </div>
+
+      {/* ✅ トースト通知 */}
+      {showToast && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            backgroundColor: "#fff",        // 背景を白に
+            color: "green",                 // ✅ 文字を緑に
+            padding: "10px 20px",
+            borderRadius: "8px",
+            border: "1px solid green",      // 縁も緑にすると見やすい
+            boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+            fontSize: "14px",
+            fontWeight: "bold",
+            zIndex: 1000,
+            animation: "fadeInOut 3s forwards"
+          }}
+        >
+          送信完了しました。
+        </div>
+      )}
     </div>
   )
 }

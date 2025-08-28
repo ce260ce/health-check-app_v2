@@ -15,6 +15,7 @@ export const TaskList = ({
     onDeleteClick,
     onDeleteFileClick,
     onCompleteClick = () => { },
+    filterName,
 }) => {
     return (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px' }}>
@@ -34,6 +35,7 @@ export const TaskList = ({
                     onDeleteClick={onDeleteClick}
                     onDeleteFileClick={onDeleteFileClick}
                     onCompleteClick={onCompleteClick}
+                    filterName={filterName}
                 />
             ))}
         </div>

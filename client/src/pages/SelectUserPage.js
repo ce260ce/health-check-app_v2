@@ -37,14 +37,14 @@ export const SelectUserPage = () => {
           backgroundColor: '#666',
           margin: '0 8px',
           alignSelf: 'center',
-        }}/>
+        }} />
         <button className="btn" onClick={() => navigate('/list')}>📊 一覧表示</button>
         <button className="btn" onClick={() => navigate('/link-builder')}>🔗 リンク作成</button>
         <button className="btn" onClick={() => navigate('/names')}>👥 メンバー管理</button>
-        <button className="btn" onClick={() => navigate('/admin')}>⚙️ 一括年休登録</button>
+        <button className="btn" onClick={() => navigate('/admin')}>⚙️ 一括登録</button>
       </div>
 
-      <hr style={{ margin: '30px 0' }}/>
+      <hr style={{ margin: '30px 0' }} />
 
       <h1>📋 体調/作業 入力ページ</h1>
       <h2>👤 ユーザーを選択してください</h2>

@@ -1,0 +1,100 @@
+[{
+  "_id": {
+    "$oid": "683f7857dd99182fa203c6aa"
+  },
+  "label": "DIAS",
+  "url": "https://kpmsys.qg.toyota.co.jp/de_main.htm",
+  "forAll": true,
+  "forName": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683f7879dd99182fa203c6ad"
+  },
+  "label": "健康チャレンジ8",
+  "url": "https://toyotajp.sharepoint.com/:x:/r/sites/msspo_QE0025/_layouts/15/Doc.aspx?sourcedoc=%7B5B978DD1-4759-4C23-8CE3-3D5C6AEB5BF3%7D&file=QEF23_%25u300c2025%25u5e74%25u5065%25u5eb7%25u30c1%25u30e3%25u30ec%25u30f3%25u30b88%25u300d%25u5b9f%25u8df5%25u304d%25u3063%25u304b%25u3051%25u30b7%25u30fc%25u30c8.xlsx&action=default&mobileredirect=true",
+  "forAll": true,
+  "forName": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683f78aedd99182fa203c6b0"
+  },
+  "label": "在宅勤務・年休計画表",
+  "url": "https://toyotajp.sharepoint.com/:x:/r/sites/msspo_QE0025/QEF_2G/QEF23/08_%E7%B7%8F%E5%8B%99/01_%E5%8B%A4%E5%8B%99%E7%AE%A1%E7%90%86/03.%E7%B5%84%E5%86%85%E5%B0%82%E7%94%A8%E3%83%84%E3%83%BC%E3%83%AB/2025_QEF23_%E5%9C%A8%E5%AE%85%E3%83%BB%E8%A8%88%E7%94%BB%E5%B9%B4%E4%BC%91%E8%A1%A8.xlsm",
+  "forAll": true,
+  "forName": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683f78d3dd99182fa203c6b3"
+  },
+  "label": "残業予定アプリ",
+  "url": "https://apps.powerapps.com/play/e/default-d1c1335e-f582-42a9-b6fe-5e1a16eb9bc8/a/c5e7ff1b-70d2-46cd-b886-8dd87c7ceb3a?tenantId=d1c1335e-f582-42a9-b6fe-5e1a16eb9bc8&source=portal",
+  "forAll": true,
+  "forName": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6840c5be80b7d5920aa8b0d3"
+  },
+  "label": "T-wave",
+  "url": "https://tw.portal.toyota/",
+  "forAll": true,
+  "forName": null,
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6840e3a380b7d5920aa8b3b0"
+  },
+  "label": "プチクエ",
+  "url": "https://apps.powerapps.com/play/e/default-d1c1335e-f582-42a9-b6fe-5e1a16eb9bc8/a/4e73ec37-18a6-47b0-9c08-f653260ef4a1?tenantId=d1c1335e-f582-42a9-b6fe-5e1a16eb9bc8",
+  "forAll": false,
+  "forName": "加藤　勝",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684216a0afb675c5e98a2024"
+  },
+  "label": "年間業務計画表",
+  "url": "https://toyotajp.sharepoint.com/:x:/r/sites/msspo_QE0025/QEF_Share/08_%E7%B7%8F%E5%8B%99/01_%E5%B9%B4%E9%96%93%E6%A5%AD%E5%8B%99%E8%A8%88%E7%94%BB%E8%A1%A8/QEF23/2025%E5%B9%B4%E5%BA%A6/%E2%98%86%E3%80%90%E3%83%A2%E3%83%8E%E9%96%8B_%E5%AE%9F%E7%B8%BE%E8%87%AA%E5%8B%95%E5%8F%96%E5%BE%97%E3%80%912025%E5%B9%B4%E5%BA%A6_%E5%B9%B4%E9%96%93%E6%A5%AD%E5%8B%99%E8%A8%88%E7%94%BB%E8%A1%A8-%E4%BB%8A%E6%9D%91.xlsm?d=wf9325a6ba2294fb78cec1afb2a5da40c&csf=1&web=1&e=pST1qF",
+  "forAll": false,
+  "forName": "今村　透",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684216edafb675c5e98a2045"
+  },
+  "label": "T-click",
+  "url": "https://t-click.kitora.toyota.co.jp/AgileWorks/SSO/picus.jsp",
+  "forAll": false,
+  "forName": "今村　透",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684217afafb675c5e98a205c"
+  },
+  "label": "組織票",
+  "url": "https://toyotajp.sharepoint.com/sites/msspo_QE_soumu/SitePages/%E3%83%A2%E3%83%8E%E3%82%A8%E3%83%B3-Information.aspx#%E2%96%A0%E7%B5%84%E7%B9%94%E8%A1%A8%E3%83%BB%E5%90%84%E7%A8%AE%E5%A7%94%E5%93%A1",
+  "forAll": false,
+  "forName": "今村　透",
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "684b619b9524ed059bcb98f9"
+  },
+  "label": "組HP",
+  "url": "https://toyotajp.sharepoint.com/sites/msteams_02809a/SitePages/%EF%BC%A6%EF%BC%92%EF%BC%93%E7%B5%84-%EF%BC%B3%EF%BC%B0%EF%BC%AF%E3%82%B5%E3%82%A4%E3%83%88.aspx?web=1&OR=Teams-HL&CT=1704692354123&clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24i&startedResponseCatch=true",
+  "forAll": false,
+  "forName": "田中　智也",
+  "__v": 0
+}]

@@ -8,42 +8,58 @@ export const BulletinCard = ({
   editForm,
   onEditChange,
   onEditSubmit,
-  onCancelEdit
+  onCancelEdit,
 }) => {
   const handleToggle = async (name, checked) => {
     try {
-      await onMarkAsRead(bulletin._id, name, checked)
+      await onMarkAsRead(bulletin._id, name, checked);
     } catch (err) {
-      console.error('チェック更新失敗:', err)
+      console.error("チェック更新失敗:", err);
     }
-  }
+  };
 
-  // description に含まれる URL を自動でリンクにする関数
+  const shortenUrl = (url) => {
+    try {
+      const { hostname } = new URL(url);
+      return `${hostname}/...`;
+    } catch {
+      return url;
+    }
+  };
+
   const descriptionWithLinks = (text) => {
-    const parts = text.split(/(https?:\/\/[^\s]+)/g)
+    const parts = text.split(/(https?:\/\/[^\s]+)/g);
     return parts.map((part, i) =>
-      part.match(/^https?:\/\//)
-        ? (
-          <a key={i} href={part} target="_blank" rel="noopener noreferrer" style={{ color: 'blue' }}>
-            {part}
-          </a>
-        )
-        : part
-    )
-  }
+      part.match(/^https?:\/\//) ? (
+        <a
+          key={i}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "blue", wordBreak: "break-word" }}
+        >
+          {shortenUrl(part)}
+        </a>
+      ) : (
+        <span key={i}>{part}</span>
+      )
+    );
+  };
+
 
   if (isEditing) {
     return (
       <form
         onSubmit={onEditSubmit}
         style={{
-          border: '1px solid #aaa',
+          border: "1px solid #aaa",
           padding: 12,
           borderRadius: 8,
-          backgroundColor: '#f9f9f9',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '10px'
+          backgroundColor: "#f9f9f9",
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+          minWidth: 0, // 折り返し有効化
         }}
       >
         <input
@@ -76,39 +92,50 @@ export const BulletinCard = ({
           required
         />
 
-        <div style={{ display: 'flex', gap: '10px', marginTop: 'auto' }}>
-          <button className="btn" type="submit">💾 保存</button>
-          <button className="btn" type="button" onClick={onCancelEdit}>キャンセル</button>
+        <div style={{ display: "flex", gap: "10px", marginTop: "auto" }}>
+          <button className="btn" type="submit">
+            💾 保存
+          </button>
+          <button className="btn" type="button" onClick={onCancelEdit}>
+            キャンセル
+          </button>
         </div>
       </form>
-    )
+    );
   }
 
-  // 通常表示
   return (
     <div
       style={{
-        border: '1px solid #ddd',
+        border: "1px solid #ddd",
         padding: 12,
         borderRadius: 8,
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '320px',
-        backgroundColor: '#fff',
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "320px",
+        backgroundColor: "#fff",
+        minWidth: 0, // これが重要
+        wordBreak: "break-word", // 保険として全体に適用
       }}
     >
       <h4>{bulletin.title}</h4>
-      <p style={{ whiteSpace: 'pre-wrap' }}>
+
+      <p style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
         {descriptionWithLinks(bulletin.description)}
       </p>
 
       {bulletin.files?.length > 0 && (
-        <div>
+        <div style={{ marginTop: 10 }}>
           <strong>📎 添付ファイル:</strong>
-          <ul>
+          <ul style={{ paddingLeft: 20 }}>
             {bulletin.files.map((f, i) => (
               <li key={i}>
-                <a href={`${process.env.REACT_APP_API_URL}${f.url}`} target="_blank" rel="noopener noreferrer">
+                <a
+                  href={`${process.env.REACT_APP_API_URL}${f.url}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ wordBreak: "break-word" }}
+                >
                   {f.name}
                 </a>
               </li>
@@ -118,18 +145,23 @@ export const BulletinCard = ({
       )}
 
       <div style={{ marginTop: 10 }}>
-        <strong>投稿者:</strong> {bulletin.postedBy}
+        <strong>投稿者:</strong>{" "}
+        <span style={{ wordBreak: "break-word" }}>{bulletin.postedBy}</span>
       </div>
 
       <div style={{ marginTop: 10 }}>
-        <strong>掲示期限:</strong> {new Date(bulletin.visibleUntil).toLocaleDateString()}
+        <strong>掲示期限:</strong>{" "}
+        {new Date(bulletin.visibleUntil).toLocaleDateString()}
       </div>
 
       <div style={{ marginTop: 10 }}>
         <strong>確認状況:</strong>
-        <ul style={{ listStyle: 'none', paddingLeft: 0 }}>
-          {names.map(name => (
-            <li key={name} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        <ul style={{ listStyle: "none", paddingLeft: 0 }}>
+          {names.map((name) => (
+            <li
+              key={name}
+              style={{ display: "flex", alignItems: "center", gap: 8 }}
+            >
               <input
                 type="checkbox"
                 checked={!!bulletin.checkedBy?.[name]}
@@ -141,23 +173,29 @@ export const BulletinCard = ({
         </ul>
       </div>
 
-      {/* 編集・削除ボタン */}
-      <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+      <div
+        style={{
+          marginTop: "auto",
+          display: "flex",
+          justifyContent: "flex-end",
+          gap: "10px",
+        }}
+      >
         <button
           className="btn"
-          style={{ backgroundColor: '#bbb', color: '#555' }}
+          style={{ backgroundColor: "#bbb", color: "#555" }}
           onClick={() => onEditClick(bulletin)}
         >
           ✏️ 編集
         </button>
         <button
           className="btn"
-          style={{ backgroundColor: '#eee', color: '#555' }}
+          style={{ backgroundColor: "#eee", color: "#555" }}
           onClick={() => onDeleteClick(bulletin._id)}
         >
           🗑 削除
         </button>
       </div>
     </div>
-  )
-}
+  );
+};

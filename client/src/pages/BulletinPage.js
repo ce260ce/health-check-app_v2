@@ -28,10 +28,10 @@ export const BulletinPage = () => {
     handleCancelEdit,
   } = useEditBulletinForm(fetchBulletins);
 
-  // 初回のみ取得
+
   useEffect(() => {
     fetchBulletins();
-  }, []);
+  }, [fetchBulletins]);
 
   // 確認状態の更新
   const handleMarkAsRead = async (id, name, checked) => {

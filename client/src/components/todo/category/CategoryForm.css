@@ -1,0 +1,29 @@
+/* 横並び＋縦方向センターそろえ */
+.category-form{
+    display:flex;
+    gap:10px;
+    align-items:center;   /* ★ ここが重要 */
+  }
+  
+  /* 入力とボタンの高さを完全一致させる */
+  .category-form .input{
+    height:44px;                 /* 統一高さ */
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    font-size:14px;
+    box-sizing:border-box;
+  }
+  
+  .category-form .btn-primary {
+    margin-top: 0;          /* TodoForm の影響をリセット */
+    height: 44px;           /* 入力と揃える */
+    padding: 0 16px;        /* 横方向に十分な余白をつける */
+    display: inline-flex;
+    align-items: center;    /* 縦センター */
+    justify-content: center;/* 横センター */
+    line-height: 1;         /* 不要な余白を消す */
+    white-space: nowrap;    /* ← 改行を禁止 */
+    min-width: 64px;        /* ← 横幅を確保 */
+    box-sizing: border-box;
+  }

@@ -1,7 +1,7 @@
 // hooks/useTaskForm.js
 import { useState } from 'react';
 
-export function useTaskForm(initial = { title: '', description: '', dueDate: '' }) {
+export function useTaskForm(initial = { title: '', description: '', startDate: '', dueDate: '' }) {
     const [form, setForm] = useState(initial);
     const [files, setFiles] = useState([]);
 
@@ -22,7 +22,7 @@ export function useTaskForm(initial = { title: '', description: '', dueDate: '' 
     };
 
     const resetForm = () => {
-        setForm({ title: '', description: '', dueDate: '' });
+        setForm({ title: '', description: '', startDate: '', dueDate: '' });
         setFiles([]);
     };
 

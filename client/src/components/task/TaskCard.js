@@ -2,6 +2,15 @@ import React from 'react';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+const shortenUrl = (url) => {
+    try {
+        const { hostname } = new URL(url);
+        return `${hostname}/...`;
+    } catch {
+        return url;
+    }
+};
+
 export const TaskCard = ({
     task,
     names,
@@ -16,13 +25,20 @@ export const TaskCard = ({
     onCancelEdit,
     onDeleteFileClick,
     onCompleteClick,
+    filterName,
 }) => {
     const due = new Date(task.dueDate);
-    const diff = (due - today) / (1000 * 60 * 60 * 24);
+    const start = new Date(task.startDate);
+    const todayOnly = new Date(today);
+    due.setHours(0, 0, 0, 0);
+    todayOnly.setHours(0, 0, 0, 0);
+    const diff = (due - todayOnly) / (1000 * 60 * 60 * 24);
+    const displayNames = filterName ? [filterName] : names;
 
     return (
         <div
             style={{
+                width: "96%",
                 border: '1px solid #ccc',
                 padding: 10,
                 borderRadius: 8,
@@ -30,6 +46,8 @@ export const TaskCard = ({
                 display: 'flex',
                 flexDirection: 'column',
                 backgroundColor: task.isCompleted ? '#dcdcdc' : 'white',
+                wordBreak: "break-word",
+                whiteSpace: "pre-wrap",
             }}
         >
             {isEditing ? (
@@ -39,6 +57,7 @@ export const TaskCard = ({
                 >
                     <input name="title" value={editForm.title} onChange={onEditChange} placeholder="タイトル" />
                     <textarea name="description" value={editForm.description} onChange={onEditChange} rows={3} />
+                    <input type="date" name="startDate" value={editForm.startDate} onChange={onEditChange} />
                     <input type="date" name="dueDate" value={editForm.dueDate} onChange={onEditChange} />
 
                     {task.files && task.files.length > 0 && (
@@ -58,7 +77,12 @@ export const TaskCard = ({
                                         <button
                                             type="button"
                                             className="btn"
-                                            style={{ marginLeft: 8, backgroundColor: '#eee', color: '#555', fontSize: '0.75rem' }}
+                                            style={{
+                                                marginLeft: 8,
+                                                backgroundColor: '#eee',
+                                                color: '#555',
+                                                fontSize: '0.75rem'
+                                            }}
                                             onClick={() => onDeleteFileClick(task._id, file.fileName)}
                                         >
                                             🗑 削除
@@ -83,14 +107,23 @@ export const TaskCard = ({
                         {task.description.split(/(https?:\/\/[^\s]+)/g).map((part, i) =>
                             part.match(/^https?:\//) ? (
                                 <a key={i} href={part} target="_blank" rel="noreferrer" style={{ color: "blue" }}>
-                                    {part}
+                                    {shortenUrl(part)}
                                 </a>
                             ) : (
                                 <span key={i}>{part}</span>
                             )
                         )}
                     </div>
-                    <p>納期: {due.toLocaleDateString()}</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 2, fontSize: '0.9rem', marginTop: 6 }}>
+                        <div style={{ display: 'flex' }}>
+                            <span style={{ width: 60, display: 'inline-block' }}>開始日:</span>
+                            <span>{start.toLocaleDateString()}</span>
+                        </div>
+                        <div style={{ display: 'flex' }}>
+                            <span style={{ width: 60, display: 'inline-block' }}>納期:</span>
+                            <span>{due.toLocaleDateString()}</span>
+                        </div>
+                    </div>
 
                     {Array.isArray(task.files) && task.files.length > 0 && (
                         <div style={{ marginBottom: 10 }}>
@@ -114,8 +147,8 @@ export const TaskCard = ({
                     {!task.isCompleted && (
                         <>
                             <h4>チェックリスト：</h4>
-                            <ul>
-                                {names.map(name => {
+                            <ul style={{ listStyleType: 'none', paddingLeft: 0 }}>
+                                {displayNames.map(name => {
                                     const checked = task.checkedBy?.[name] || false;
                                     let nameColor = 'black';
                                     if (!checked) {
@@ -142,16 +175,22 @@ export const TaskCard = ({
                     <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between' }}>
                         <div>
                             {task.isCompleted ? (
-                                <button className="btn" onClick={() => onCompleteClick(task._id)}>↩️ 戻す</button>
+                                <button className="edit-btn" onClick={() => onCompleteClick(task._id)}>↩️ 戻す</button>
                             ) : (
-                                <button className="btn" onClick={() => onCompleteClick(task._id)}>✅ 完了</button>
+                                <button className="edit-btn" onClick={() => onCompleteClick(task._id)}>✅ 完了</button>
                             )}
                         </div>
 
                         <div style={{ display: 'flex', gap: '10px' }}>
-                            <button className="btn" style={{ backgroundColor: '#bbb', color: '#555' }} onClick={() => onEditClick(task)}>✏️ 編集</button>
                             <button
-                                className="btn"
+                                className="edit-btn"
+                                style={{ backgroundColor: '#bbb', color: '#555' }}
+                                onClick={() => onEditClick(task)}
+                            >
+                                ✏️ 編集
+                            </button>
+                            <button
+                                className="edit-btn"
                                 style={{ backgroundColor: '#eee', color: '#555' }}
                                 onClick={() => onDeleteClick(task._id)}
                             >

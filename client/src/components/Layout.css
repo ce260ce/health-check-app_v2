@@ -1,0 +1,106 @@
+.layout-container {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 200px;
+  background-color: #111;
+  color: #fff;
+  padding: 1rem;
+  transition: width 0.3s;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar.collapsed {
+  width: 60px;
+  padding: 1rem 0.5rem;
+}
+
+.toggle-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #333;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.content {
+  flex: 1;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  color: #000;
+  overflow-y: auto;
+}
+
+/* メニューリスト共通 */
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin-bottom: 5px;
+}
+
+/* リンク全体に適用 */
+.sidebar a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* アプリタイトル専用 */
+.app-title {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  pointer-events: auto;
+}
+
+/* アプリタイトルはホバーしても変化しない */
+.app-title:hover {
+  transform: none;
+  text-decoration: none;
+}
+
+/* 一般メニューリンク（拡大） */
+.sidebar ul li a {
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+/* ホバーで文字拡大 */
+.sidebar ul li a:hover {
+  transform: scale(1.1);
+  text-decoration: none;
+}
+
+/* セクションごとの間隔 */
+.menu-section {
+  margin-bottom: 0.5rem;
+}
+
+/* 管理者セクションのヘッダースペース */
+.admin-section h3 {
+  margin-top: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar .menu-section h3 {
+  margin: 1.5rem 0 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+}

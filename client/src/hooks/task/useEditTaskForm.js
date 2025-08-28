@@ -9,6 +9,7 @@ export function useEditTaskForm(fetchTasks) {
     const [editForm, setEditForm] = useState({
         title: '',
         description: '',
+        startDate: '',
         dueDate: '',
     });
 
@@ -17,6 +18,7 @@ export function useEditTaskForm(fetchTasks) {
         setEditForm({
             title: task.title,
             description: task.description,
+            startDate: task.startDate?.slice(0, 10),
             dueDate: task.dueDate?.slice(0, 10),
         });
     };
@@ -30,6 +32,7 @@ export function useEditTaskForm(fetchTasks) {
         const formData = new FormData();
         formData.append('title', editForm.title);
         formData.append('description', editForm.description);
+        formData.append('startDate', editForm.startDate); // ✅ ← 追加
         formData.append('dueDate', editForm.dueDate);
 
         const fileInput = e.target.elements.file;
