@@ -53,7 +53,7 @@ export const TaskPage = () => {
         ? tasks.filter((task) => !task.checkedBy?.[filterName])
         : tasks;
 
-    const completedTasks = filteredTasks.filter((task) => task.isCompleted);
+    const completedTasks = tasks.filter((task) => task.isCompleted);
 
     const today = new Date();
     const todayOnly = new Date(today);

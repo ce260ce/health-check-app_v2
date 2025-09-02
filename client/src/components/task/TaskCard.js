@@ -161,7 +161,7 @@ export const TaskCard = ({
                                                 <input
                                                     type="checkbox"
                                                     checked={checked}
-                                                    onChange={() => onToggleCheck(task._id, name, checked)}
+                                                    onChange={(e) => onToggleCheck(task._id, name, e.target.checked)}
                                                 />
                                                 {name}
                                             </label>

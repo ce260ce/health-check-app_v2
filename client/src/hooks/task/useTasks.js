@@ -60,31 +60,29 @@ export function useTasks() {
         [fetchTasks]
     );
 
+
     // 完了にする
-    const completeTask = useCallback(
-        async (taskId) => {
-            try {
-                await axios.post(`${API}/api/tasks/${taskId}/complete`);
-                await fetchTasks();
-            } catch (err) {
-                console.error("完了更新失敗:", err);
-            }
-        },
-        [fetchTasks]
-    );
+    const completeTask = useCallback(async (taskId) => {
+        setTasks(prev => prev.map(t => t._id === taskId ? { ...t, isCompleted: true } : t));
+        try {
+            await axios.put(`${API}/api/tasks/${taskId}/complete`, { isCompleted: true });
+        } catch (err) {
+            setTasks(prev => prev.map(t => t._id === taskId ? { ...t, isCompleted: false } : t));
+            console.error("完了更新失敗:", err);
+        }
+    }, []);
 
     // 未完了へ戻す
-    const uncompleteTask = useCallback(
-        async (taskId) => {
-            try {
-                await axios.post(`${API}/api/tasks/${taskId}/uncomplete`);
-                await fetchTasks();
-            } catch (err) {
-                console.error("未完了戻し失敗:", err);
-            }
-        },
-        [fetchTasks]
-    );
+    const uncompleteTask = useCallback(async (taskId) => {
+        setTasks(prev => prev.map(t => t._id === taskId ? { ...t, isCompleted: false } : t));
+        try {
+            await axios.put(`${API}/api/tasks/${taskId}/complete`, { isCompleted: false });
+        } catch (err) {
+            setTasks(prev => prev.map(t => t._id === taskId ? { ...t, isCompleted: true } : t));
+            console.error("未完了戻し失敗:", err);
+        }
+    }, []);
+
 
     return {
         tasks,
