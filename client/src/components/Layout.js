@@ -2,7 +2,7 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useState, useEffect, useCallback } from 'react'
 import './Layout.css'
-import { UserQuickLink } from './UserQuickLink'   // ← 追加
+import { UserQuickLink } from './UserQuickLink'
 
 const API = process.env.REACT_APP_API_URL;
 

@@ -1,10 +1,11 @@
-// src/components/UserQuickLink.js
 import { useEffect, useState, useCallback } from 'react'
 
 export function UserQuickLink({
     apiBase = process.env.REACT_APP_API_URL || '',
     storageKey = 'selectedUserName',
-    openInNewTab = false, // 新しいタブで開きたい場合は true に
+    openInNewTab = false,
+    targetBase = '',
+    targetPath = '/',
 }) {
     const [names, setNames] = useState([])
     const [selected, setSelected] = useState('')
@@ -32,9 +33,18 @@ export function UserQuickLink({
         else localStorage.removeItem(storageKey)
     }
 
+
+    const buildUrl = (base, path, name) => {
+        const b = (base || '').replace(/\/+$/, '')        // 末尾スラッシュ削除
+        const p = ('/' + (path || '').replace(/^\/+/, ''))// 先頭スラッシュ1つに正規化
+        const u = `${b}${p}` || '/'                       // 両方空なら '/'
+        const sep = u.includes('?') ? '&' : '?'           // 既にクエリがある場合も考慮
+        return `${u}${sep}name=${encodeURIComponent(name)}`
+    }
+
     const goUserPage = () => {
         if (!selected) return
-        const url = `http://localhost:3001/?name=${encodeURIComponent(selected)}`
+        const url = buildUrl(targetBase, targetPath, selected)
         if (openInNewTab) window.open(url, '_blank', 'noopener,noreferrer')
         else window.location.href = url
     }
