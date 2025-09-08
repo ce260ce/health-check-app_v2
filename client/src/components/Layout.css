@@ -104,3 +104,17 @@
   font-size: 1rem;
   font-weight: bold;
 }
+
+/* Layout.css に追記（このボタンだけ小さく） */
+.sidebar .user-quicklink .btn {
+  font-size: 14px;      /* 文字サイズ */
+  padding: 4px 8px;     /* 余白 */
+  line-height: 1.2;
+  width: auto;          /* もし幅いっぱいになっていたら解除 */
+  align-self: start;    /* 左寄せ */
+}
+
+/* Layout.css に追記（小さめに） */
+.sidebar .user-quicklink-label { font-size: 14px; font-weight: 600; line-height: 1.2; margin-bottom: 4px; display: inline-block; }
+.sidebar .user-quicklink select { font-size: 14px; padding: 4px 6px; height: 28px; }
+.btn-compact { font-size: 12px; padding: 4px 8px; line-height: 1.2; }

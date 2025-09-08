@@ -2,6 +2,7 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
 import { useState, useEffect, useCallback } from 'react'
 import './Layout.css'
+import { UserQuickLink } from './UserQuickLink'   // ← 追加
 
 const API = process.env.REACT_APP_API_URL;
 
@@ -21,24 +22,17 @@ export function Layout() {
     }, [])
 
     useEffect(() => {
-        // 初回読み込み
         fetchCommonLinks()
-
-        // LinkBuilderPage からの更新通知を購読
         const handler = () => fetchCommonLinks()
         window.addEventListener('links:update', handler)
-
-        // 画面が戻ってきた時などにも更新したい場合（任意）
         const visHandler = () => { if (!document.hidden) fetchCommonLinks() }
         document.addEventListener('visibilitychange', visHandler)
-
         return () => {
             window.removeEventListener('links:update', handler)
             document.removeEventListener('visibilitychange', visHandler)
         }
     }, [fetchCommonLinks])
 
-    // ルート遷移時に軽く再読込したい場合（任意）
     useEffect(() => { fetchCommonLinks() }, [location.pathname, fetchCommonLinks])
 
     return (
@@ -55,6 +49,9 @@ export function Layout() {
                         </h2>
 
                         <ul className="menu-section">
+                            {/* ▼ 「ホーム」の上に分離したコンポーネントを配置 */}
+                            <li><UserQuickLink apiBase={API} /></li>
+
                             <li><Link to="/">📋ホーム</Link></li>
                             <li><Link to="/today">📅 本日の記録</Link></li>
                             <li><Link to="/tasks">📝 タスク一覧</Link></li>
@@ -62,7 +59,7 @@ export function Layout() {
                             <li><Link to="/link-builder">🔗 リンク作成</Link></li>
                             <li><Link to="/todo">📋個人用TODOリスト</Link></li>
                         </ul>
-                        {/* ▼ ここから共通リンク表示 */}
+
                         {commonLinks.length > 0 && (
                             <ul className="menu-section">
                                 <h3>共通リンク</h3>
@@ -87,8 +84,6 @@ export function Layout() {
                             <li><Link to="/names">👥 メンバー管理</Link></li>
                             <li><Link to="/admin">⚙️ 一括登録</Link></li>
                         </ul>
-
-
                     </>
                 )}
             </aside>

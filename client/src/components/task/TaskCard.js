@@ -177,7 +177,7 @@ export const TaskCard = ({
                             {task.isCompleted ? (
                                 <button className="edit-btn" onClick={() => onCompleteClick(task._id)}>↩️ 戻す</button>
                             ) : (
-                                <button className="edit-btn" onClick={() => onCompleteClick(task._id)}>✅ 完了</button>
+                                <button className="edit-btn" onClick={() => onCompleteClick(task._id)}>✅ 完了済みタスクへ移動</button>
                             )}
                         </div>
 
