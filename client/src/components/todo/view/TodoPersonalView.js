@@ -1,5 +1,6 @@
 // src/components/todo/view/TodoPersonalView.jsx
 import React from "react";
+import { useNavigate } from 'react-router-dom';
 import "./TodoPersonalView.css";
 import { TodoForm } from "../form/TodoForm";
 import { CategoryForm } from "../category/CategoryForm";
@@ -31,8 +32,24 @@ export function TodoPersonalView({
     setItems,
     onReorderCategories, // ★
 }) {
+    const navigate = useNavigate();
     return (
         <div className="todo-page">
+            <button
+                className="back-btn"
+                onClick={() => navigate('/')}
+                style={{
+                    marginBottom: 20,
+                    width: 'auto',            // 親から width:100% 等が来ても上書き
+                    maxWidth: 'fit-content',  // コンテンツ幅に合わせる（保険）
+                    justifySelf: 'start',     // 親がgridのときの横伸び防止
+                    alignSelf: 'flex-start',  // 親がflex/gridのときの縦揃え
+                    whiteSpace: 'nowrap',     // 文字折返しで横長になるのを防止（任意）
+                }}
+            >
+                ← 戻る
+            </button>
+
             <div className="todo-title-row">
                 <h1 className="todo-title">{title}</h1>
                 {subtitle ? <span className="todo-subtitle">{subtitle}</span> : null}
